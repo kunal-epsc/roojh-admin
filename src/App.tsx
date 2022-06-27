@@ -1,25 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Box, createTheme, PaletteMode, ThemeProvider } from "@mui/material";
+import { useState } from "react";
+import { Redirect, Route, Switch } from "react-router-dom";
+
+import Auth from "./pages/auth/Auth-Router";
+import Shell from "./pages/shell/Shell-Router";
 
 function App() {
+  const [mode, setMode] = useState("light");
+
+  const darkTheme = createTheme({
+    palette: {
+      mode: mode as PaletteMode,
+    },
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={darkTheme}>
+      <Box bgcolor={"background.default"} color={"text.primary"} height="100vh">
+        <Switch>
+          {/* <Route path="/splash" component={SplashScreen} /> */}
+          <Route path="/" exact component={Shell} />
+          <Route path="/auth" component={Auth} />
+
+          <Route path="*">
+            <Redirect to="/" />
+          </Route>
+        </Switch>
+      </Box>
+    </ThemeProvider>
   );
 }
 
